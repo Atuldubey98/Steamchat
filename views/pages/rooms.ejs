@@ -33,7 +33,7 @@
           <img class="img-fluid" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBykoFMCqKJT2JTkaJWTtkp51Mjq6XnyolEA&usqp=CAU"/ >
           <i onclick="openPromptForRoom()" class="fa-solid fa-square-plus btn"></i>
         </div>
-          <ul class="list-group">
+          <ul class="list-group text-capitalize">
           <%for(var i = 0;i<rooms.length;i++){%>
             <%- include('../partial/roomItem', {room: rooms[i]}); %>
           <%}%>  

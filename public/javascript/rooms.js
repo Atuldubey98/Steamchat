@@ -3,37 +3,52 @@ let chatsNode = document.getElementById("chats");
 let chatBox = document.getElementById("chatBox");
 let messageNode = document.getElementById("message");
 let recipientId = document.getElementById("recipientId");
-const getMessageNode = (data) => {
+const getMessageNode = (data, sender) => {
   let masterDiv = document.createElement("div");
-  masterDiv.className="d-flex justify-content-end align-items-center m-3"
+  masterDiv.className =
+    sender === localStorage.getItem("username")
+      ? "d-flex justify-content-start align-items-center m-3"
+      : "d-flex justify-content-end align-items-center m-3";
   let div = document.createElement("div");
   div.style.maxWidth = "80%";
   div.style.width = "fit-content";
   let p = document.createElement("p");
-  div.className = `bg-success text-wrap m-1 p-2 rounded float-right`;
+  let senderNode = document.createElement("p");
+  senderNode.style.fontSize = "0.5rem";
+  senderNode.innerText = sender;
+  senderNode.className = `text-capitalize`;
+  div.className = `${
+    sender === localStorage.getItem("username") ? "bg-success" : "bg-info"
+  } text-wrap m-1 p-1 rounded float-right`;
   p.innerText = data;
   p.className = "text-white";
   div.appendChild(p);
+  masterDiv.appendChild(senderNode);
   masterDiv.appendChild(div);
   return masterDiv;
 };
-const getStatusNode = (data, isConnected) => {
+const getStatusNode = (data, isConnected, sender) => {
   let masterDiv = document.createElement("div");
+  masterDiv.style.backgroundColor = isConnected ? "#1b1b55" : "black";
+  masterDiv.style.color = "white";
   masterDiv.className = `d-flex justify-content-center align-items-center`;
   let div = document.createElement("div");
+  div.className = `d-flex justify-content-center align-items-center`;
   let p = document.createElement("p");
   div.style.width = "fit-content";
-  div.className = isConnected ? "bg-info" : "bg-danger";
-  div.classList.add("m-1", "rounded", "text-white", "text-align-center");
   let small = document.createElement("small");
   small.innerText = data;
   p.appendChild(small);
   div.appendChild(p);
-  masterDiv.appendChild(div);
+  if (!sender) masterDiv.appendChild(div);
   return masterDiv;
 };
 
-window.onload = (e) => {
+window.onload = async (e) => {
+  const username = localStorage.getItem("username");
+  if (!username) {
+    location.href = "/";
+  }
   const params = new Proxy(new URLSearchParams(window.location.search), {
     get: (searchParams, prop) => searchParams.get(prop),
   });
@@ -41,20 +56,32 @@ window.onload = (e) => {
     console.log("Empty");
     return;
   }
-
+  try {
+    const response = await fetch(`/check?room=${params.chat}`);
+    const data = await response.json();
+    if (!data?.status) {
+      location.href = "/";
+    }
+  } catch (error) {
+    return;
+  }
   recipientId.innerText = params.chat;
   chatsNode.innerHTML = "";
   socket.on(params.chat, (data) => {
     if (data?.isWelcome) {
-      chatsNode.appendChild(getStatusNode(data.message, true));
+      chatsNode.appendChild(
+        getStatusNode(data?.message, true, data?.socket === socket.id)
+      );
     } else {
-      chatsNode.appendChild(getMessageNode(data.message));
+      chatsNode.appendChild(getMessageNode(data?.message, data?.sender));
     }
     chatsNode.scrollTop = chatsNode.scrollHeight;
   });
 
   socket.on("disconnect", () => {
-    chatsNode.appendChild(getStatusNode("User disconnected", false));
+    chatsNode.appendChild(
+      getStatusNode("User disconnected", false, socket?.id === socket.id)
+    );
     chatsNode.scrollTop = chatsNode.scrollHeight;
   });
   messageNode.focus();
@@ -67,6 +94,7 @@ chatBox.onsubmit = (e) => {
     message: messageNode.value,
     isWelcome: false,
     room: recipientId.innerText,
+    sender: localStorage.getItem("username"),
   };
   socket.emit("message", data);
   messageNode.value = "";
