@@ -80,7 +80,7 @@ window.onload = async (e) => {
 
   socket.on("disconnect", () => {
     chatsNode.appendChild(
-      getStatusNode("User disconnected", false, socket?.id === socket.id)
+      getStatusNode("User disconnected", false, false)
     );
     chatsNode.scrollTop = chatsNode.scrollHeight;
   });

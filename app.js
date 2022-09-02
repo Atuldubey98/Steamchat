@@ -65,6 +65,18 @@ app.get("/check", (req, res) => {
   const status = database.rooms.indexOf(query) !== -1;
   return res.status(200).json({ status });
 });
-server.listen(3000, () => {
+app.delete("/delete-room", (req, res) => {
+  const room = req.query.room;
+  if (!room || room == null) {
+    return res.status(400).json({ status: false });
+  }
+  const index = database.rooms.indexOf(room.toLowerCase());
+  if (index != -1) {
+    delete database.rooms[index];
+    return res.status(200).json({ status: true });
+  }
+  return res.status(400).json({ status: false });
+});
+server.listen(3000, "0.0.0.0", () => {
   console.log("App is running on", 3000);
 });
