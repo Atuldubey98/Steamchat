@@ -93,7 +93,6 @@ const openPromptForRoom = async () => {
     },
     body: JSON.stringify(input),
   });
-  const data = await response.json();
   if (response.status === 200) {
 	location.reload();
   }
