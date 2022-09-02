@@ -51,8 +51,10 @@ app.post("/register", (req, res) => {
     return res.status(200).json({ staus: true });
 });
 app.post("/create-room", (req, res)=>{
+    if (!req.body.room || database.rooms.indexOf(req.body.room) != -1 || database.rooms.length > 8) {
+        return res.status(400).json({status : false});
+    }
     database.rooms.push(req.body.room);
-    console.log(database);
     return res.status(200).json({status : true});
 })
 server.listen(3000, () => {

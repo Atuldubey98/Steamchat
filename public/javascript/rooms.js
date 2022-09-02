@@ -4,6 +4,8 @@ let chatBox = document.getElementById("chatBox");
 let messageNode = document.getElementById("message");
 let recipientId = document.getElementById("recipientId");
 const getMessageNode = (data) => {
+  let masterDiv = document.createElement("div");
+  masterDiv.className="d-flex justify-content-end align-items-center m-3"
   let div = document.createElement("div");
   div.style.maxWidth = "80%";
   div.style.width = "fit-content";
@@ -12,17 +14,23 @@ const getMessageNode = (data) => {
   p.innerText = data;
   p.className = "text-white";
   div.appendChild(p);
-  return div;
+  masterDiv.appendChild(div);
+  return masterDiv;
 };
 const getStatusNode = (data, isConnected) => {
+  let masterDiv = document.createElement("div");
+  masterDiv.className = `d-flex justify-content-center align-items-center`;
   let div = document.createElement("div");
   let p = document.createElement("p");
   div.style.width = "fit-content";
   div.className = isConnected ? "bg-info" : "bg-danger";
-  div.classList.add("p-2", "m-1", "rounded", "text-white");
-  p.innerText = data;
+  div.classList.add("m-1", "rounded", "text-white", "text-align-center");
+  let small = document.createElement("small");
+  small.innerText = data;
+  p.appendChild(small);
   div.appendChild(p);
-  return div;
+  masterDiv.appendChild(div);
+  return masterDiv;
 };
 
 window.onload = (e) => {
@@ -37,7 +45,6 @@ window.onload = (e) => {
   recipientId.innerText = params.chat;
   chatsNode.innerHTML = "";
   socket.on(params.chat, (data) => {
-    console.log(data);
     if (data?.isWelcome) {
       chatsNode.appendChild(getStatusNode(data.message, true));
     } else {
@@ -45,6 +52,7 @@ window.onload = (e) => {
     }
     chatsNode.scrollTop = chatsNode.scrollHeight;
   });
+
   socket.on("disconnect", () => {
     chatsNode.appendChild(getStatusNode("User disconnected", false));
     chatsNode.scrollTop = chatsNode.scrollHeight;
@@ -83,8 +91,8 @@ const openPromptForRoom = async () => {
     return;
   }
   const input = {
-	room
-  }
+    room,
+  };
   const response = await fetch("/create-room", {
     method: "POST",
     mode: "cors",
@@ -94,6 +102,8 @@ const openPromptForRoom = async () => {
     body: JSON.stringify(input),
   });
   if (response.status === 200) {
-	location.reload();
+    location.reload();
+  } else {
+    alert("Some error occured");
   }
 };
