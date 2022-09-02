@@ -57,14 +57,12 @@ app.post("/create-room", (req, res) => {
   ) {
     return res.status(400).json({ status: false });
   }
-  database.rooms.push(req.body.room);
+  database.rooms.push(req.body.room.toLowerCase());
   return res.status(200).json({ status: true });
 });
 app.get("/check", (req, res) => {
   const query = req.query.room;
-
   const status = database.rooms.indexOf(query) !== -1;
-    
   return res.status(200).json({ status });
 });
 server.listen(3000, () => {
