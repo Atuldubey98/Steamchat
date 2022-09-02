@@ -64,7 +64,7 @@ app.get("/check", (req, res) => {
   const query = req.query.room;
 
   const status = database.rooms.indexOf(query) !== -1;
-
+    
   return res.status(200).json({ status });
 });
 server.listen(3000, () => {
