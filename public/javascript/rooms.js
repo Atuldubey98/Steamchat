@@ -158,6 +158,13 @@ const logout = () => {
   }
 };
 const deleteRoom = async (room) => {
+  let agree = false;
+  if (confirm(`Room "${room.charAt(0).toUpperCase() + room.slice(1)}" will be deleted`)) {
+    agree = true;
+  }
+  if (agree === false) {
+    return;
+  }
   if (!room || room.length == 0) {
     return;
   }

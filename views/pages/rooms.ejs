@@ -16,10 +16,8 @@
     </script>
     <title><%=title%></title>
     <style type="text/css">
-      *{
-        margin: 0;
-        padding: 0;
-        overflow-x: hidden;
+      body{
+        overflow: hidden;
       }
     </style>
   </head>
@@ -32,8 +30,6 @@
         <div class="room-image d-flex mb-2 justify-content-center align-items-center">
           <img class="img-fluid rounded-5" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBykoFMCqKJT2JTkaJWTtkp51Mjq6XnyolEA&usqp=CAU"/ >
           <div class="d-flex">
-            <i onclick="openPromptForRoom()" class="fa-solid fa-square-plus btn"></i> 
-            <i onclick="logout()" class="fa-solid fa-right-from-bracket btn"></i>
           </div>
         </div>
           <ul id="list-of-rooms" class="list-group text-capitalize">
@@ -42,7 +38,7 @@
           <%}%>  
         </ul>
       </div>
-      <div id="right-divId" class="col-9 p-0 position-relative">
+      <div id="right-divId" class="col-9 position-relative p-0">
           <%- include('../partial/chatpart')%>
       </div>
     </div>
