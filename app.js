@@ -16,7 +16,7 @@ io.on("connection", (socket) => {
     socket.join(room.toLowerCase());
   });
   socket.on("disconnect", () => {
-    console.log("user disconnected " + socket.id);
+
   });
   socket.on("message", (data) => {
     io.sockets.in(data.room.toLowerCase()).emit(data.room.toLowerCase(), data);

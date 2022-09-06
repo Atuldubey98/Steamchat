@@ -135,3 +135,12 @@ const openPromptForRoom = async () => {
     alert("Some error occured");
   }
 };
+
+const logout = ()=>{
+  if (confirm("Do you want to logout ?")) {
+    localStorage.clear();
+    window.location.replace("/");
+  }else{
+    console.log("Cannnot logout");
+  }
+}

@@ -24,7 +24,7 @@
       style="height: 100vh"
       class="d-flex justify-content-center align-items-center"
     >
-      <form id="userForm" method="post">
+      <form autocomplete="off" id="userForm" method="post">
         <div class="mb-3 w-500">
           <label for="InputUserName" class="form-label">User Name</label>
           <input
@@ -34,7 +34,7 @@
             id="inputUserName"
             aria-describedby="emailHelp"
           />
-          <p id="form-error" class="text-danger">Enter username greater than 3</p>
+          <p id="form-error" class="text-danger">Enter username greater than 3 characters</p>
         </div>
         <button class="btn btn-success">Submit</button>
       </form>
