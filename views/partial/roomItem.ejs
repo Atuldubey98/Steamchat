@@ -1,3 +1,7 @@
 <li class="list-group-item" role="button">
-    <a class="text-decoration-none text-success" href="/rooms?chat=<%=room.toLowerCase()%>"><%=room%></a>
+    <div class="d-flex justify-content-between align-items-center">
+        <a class="btn text-decoration-none text-success" href="/rooms?chat=<%=room?.toLowerCase()%>"><%=room%>
+        </a>
+        <i onclick="deleteRoom('<%=room?.toLowerCase()%>')" class="<%=index === 0 ? "fa-solid fa-trash btn disabled" : "fa-solid fa-trash btn"%>"></i>
+    </div>
 </li>

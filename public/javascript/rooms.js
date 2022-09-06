@@ -3,6 +3,8 @@ let chatsNode = document.getElementById("chats");
 let chatBox = document.getElementById("chatBox");
 let messageNode = document.getElementById("message");
 let recipientId = document.getElementById("recipientId");
+let listOfRooms = document.getElementById("list-of-rooms");
+let rightDiv = document.getElementById("right-divId");
 const getMessageNode = (data, sender) => {
   let masterDiv = document.createElement("div");
   masterDiv.className =
@@ -54,8 +56,10 @@ window.onload = async (e) => {
   });
   if (params == null || params.chat == null) {
     console.log("Empty");
+    rightDiv.style.display = "none";
     return;
   }
+  rightDiv.style.display = "inline";
   try {
     const response = await fetch(`/check?room=${params.chat}`);
     const data = await response.json();
@@ -79,11 +83,10 @@ window.onload = async (e) => {
   });
 
   socket.on("disconnect", () => {
-    chatsNode.appendChild(
-      getStatusNode("User disconnected", false, false)
-    );
+    chatsNode.appendChild(getStatusNode("User disconnected", false, false));
     chatsNode.scrollTop = chatsNode.scrollHeight;
   });
+
   messageNode.focus();
 };
 
@@ -136,11 +139,33 @@ const openPromptForRoom = async () => {
   }
 };
 
-const logout = ()=>{
+const logout = () => {
   if (confirm("Do you want to logout ?")) {
     localStorage.clear();
     window.location.replace("/");
-  }else{
+  } else {
     console.log("Cannnot logout");
   }
-}
+};
+const deleteRoom = async (room) => {
+  if (!room || room.length == 0) {
+    return;
+  }
+  try {
+    const response = await fetch(`/delete-room?room=${room}`, {
+      method: "DELETE",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    if (data.status) {
+      window.location.replace("/rooms");
+    }else{
+      console.log("Some error occured");
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};

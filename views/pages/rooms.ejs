@@ -36,13 +36,13 @@
             <i onclick="logout()" class="fa-solid fa-right-from-bracket btn"></i>
           </div>
         </div>
-          <ul class="list-group text-capitalize">
+          <ul id="list-of-rooms" class="list-group text-capitalize">
           <%for(var i = 0;i<rooms.length;i++){%>
-            <%- include('../partial/roomItem', {room: rooms[i]}); %>
+            <%- include('../partial/roomItem', {room: rooms[i], index : i}); %>
           <%}%>  
         </ul>
       </div>
-      <div class="col-9 p-0 position-relative">
+      <div id="right-divId" class="col-9 p-0 position-relative">
           <%- include('../partial/chatpart')%>
       </div>
     </div>

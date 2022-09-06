@@ -8,7 +8,7 @@ const server = http.createServer(app);
 const io = new Server(server);
 let database = {
   users: [],
-  rooms: ["default", "pokemon"],
+  rooms: ["default"],
 };
 
 io.on("connection", (socket) => {
@@ -72,7 +72,7 @@ app.delete("/delete-room", (req, res) => {
   }
   const index = database.rooms.indexOf(room.toLowerCase());
   if (index != -1) {
-    delete database.rooms[index];
+    database.rooms.splice(index, 1);
     return res.status(200).json({ status: true });
   }
   return res.status(400).json({ status: false });
