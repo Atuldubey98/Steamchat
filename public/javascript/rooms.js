@@ -1,4 +1,5 @@
 var socket = io();
+let sendBtn = document.getElementById("send-btn");
 let chatsNode = document.getElementById("chats");
 let chatBox = document.getElementById("chatBox");
 let messageNode = document.getElementById("message");
@@ -59,6 +60,7 @@ window.onload = async (e) => {
     rightDiv.style.display = "none";
     return;
   }
+  sendBtn.disabled = true;
   rightDiv.style.display = "inline";
   try {
     const response = await fetch(`/check?room=${params.chat}`);
@@ -90,6 +92,13 @@ window.onload = async (e) => {
   messageNode.focus();
 };
 
+messageNode.oninput = ()=>{
+  if (!messageNode || messageNode.value?.length < 1) {
+    sendBtn.disabled = true;
+  }else{
+    sendBtn.disabled = false;
+  }
+}
 chatBox.onsubmit = (e) => {
   e.preventDefault();
   if (!messageNode || messageNode.value < 1) return;
@@ -101,6 +110,7 @@ chatBox.onsubmit = (e) => {
   };
   socket.emit("message", data);
   messageNode.value = "";
+  sendBtn.disabled=true;
 };
 
 const getValidate = (room) => {
