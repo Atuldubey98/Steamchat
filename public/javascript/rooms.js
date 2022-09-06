@@ -21,7 +21,7 @@ const getMessageNode = (data, sender) => {
   senderNode.innerText = sender;
   senderNode.className = `text-capitalize`;
   div.className = `${
-    sender === localStorage.getItem("username") ? "bg-success" : "bg-info"
+    sender === localStorage.getItem("username") ? "d-flex justify-content-end align-items-center bg-success" : "bg-info"
   } text-wrap m-1 p-1 rounded float-right`;
   p.innerText = data;
   p.className = "text-white";
@@ -159,7 +159,7 @@ const logout = () => {
 };
 const deleteRoom = async (room) => {
   let agree = false;
-  if (confirm(`Room "${room.charAt(0).toUpperCase() + room.slice(1)}" will be deleted`)) {
+  if (confirm(`Room "${room.charAt(0).toUpperCase() + room.slice(1)} will be deleted`)) {
     agree = true;
   }
   if (agree === false) {
