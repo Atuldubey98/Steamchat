@@ -6,6 +6,7 @@ let messageNode = document.getElementById("message");
 let recipientId = document.getElementById("recipientId");
 let listOfRooms = document.getElementById("list-of-rooms");
 let rightDiv = document.getElementById("right-divId");
+let online = document.getElementById("onlineNo");
 const getMessageNode = (data, sender) => {
   let masterDiv = document.createElement("div");
   masterDiv.className =
@@ -30,7 +31,7 @@ const getMessageNode = (data, sender) => {
   masterDiv.appendChild(div);
   return masterDiv;
 };
-const getStatusNode = (data, isConnected, sender) => {
+const getStatusNode = (data, isConnected, sender, size) => {
   let masterDiv = document.createElement("div");
   masterDiv.style.backgroundColor = isConnected ? "#1b1b55" : "black";
   masterDiv.style.color = "white";
@@ -43,6 +44,12 @@ const getStatusNode = (data, isConnected, sender) => {
   small.innerText = data;
   p.appendChild(small);
   div.appendChild(p);
+  console.log(size);
+  let span = document.createElement("span");
+  console.log(size)
+  span.innerText=size;
+  online.innerHTML="";
+  online.appendChild(span)
   if (!sender) masterDiv.appendChild(div);
   return masterDiv;
 };
@@ -76,7 +83,7 @@ window.onload = async (e) => {
   socket.on(params.chat, (data) => {
     if (data?.isWelcome) {
       chatsNode.appendChild(
-        getStatusNode(data?.message, true, data?.socket === socket.id)
+        getStatusNode(data?.message, true, data?.socket === socket.id, data?.size)
       );
     } else {
       chatsNode.appendChild(getMessageNode(data?.message, data?.sender));
@@ -85,7 +92,7 @@ window.onload = async (e) => {
   });
 
   socket.on("disconnect", () => {
-    chatsNode.appendChild(getStatusNode("User disconnected", false, false));
+    chatsNode.appendChild(getStatusNode("User disconnected", false, false, 0));
     chatsNode.scrollTop = chatsNode.scrollHeight;
   });
 

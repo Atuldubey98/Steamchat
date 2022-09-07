@@ -27,6 +27,7 @@ io.on("connection", (socket) => {
       message: "User Connected",
       room: room.toLowerCase(),
       socket: socket.id,
+      size: io.sockets.adapter.rooms.get(room.toLowerCase()).size
     });
   });
 });
