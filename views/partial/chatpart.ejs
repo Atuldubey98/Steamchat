@@ -1,6 +1,9 @@
-<div class="bg-light d-flex align-items-center p-1">
-	<i onclick="openPromptForRoom()" class="fa-solid fa-square-plus btn"></i> 
-	<i onclick="logout()" class="fa-solid fa-right-from-bracket btn"></i>
+<div class="bg-light d-flex align-items-center justify-content-between p-1">
+	<div class="d-flex align-items-center">
+		<i onclick="openPromptForRoom()" class="fa-solid fa-square-plus btn p-1"><span class="p-1">Create Room</span></i>
+		<i id="onlineNo" class="fa-solid fa-circle text-success p-1"></i>
+	</div>
+	<i onclick="logout()" class="fa-solid fa-right-from-bracket btn"><span class="p-1">Logout</span></i>
 </div>
 <p id="recipientId" class="text-light text-capitalize text-center bg-dark p-2"></p>
 
