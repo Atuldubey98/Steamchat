@@ -78,6 +78,6 @@ app.delete("/delete-room", (req, res) => {
   }
   return res.status(400).json({ status: false });
 });
-server.listen(3000, "0.0.0.0", () => {
+server.listen(3000, () => {
   console.log("App is running on", 3000);
 });
