@@ -1,3 +1,4 @@
+require('dotenv').config()
 const bodyParser = require("body-parser");
 const express = require("express");
 const cors = require("cors");
@@ -6,6 +7,7 @@ const { Server } = require("socket.io");
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
+const PORT=process.env.PORT||5000;
 let database = {
   users: [],
   rooms: ["default"],
@@ -78,6 +80,6 @@ app.delete("/delete-room", (req, res) => {
   }
   return res.status(400).json({ status: false });
 });
-server.listen(3000, () => {
-  console.log("App is running on", 3000);
+server.listen(PORT, () => {
+  console.log("App is running on", PORT);
 });
