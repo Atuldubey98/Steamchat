@@ -1,9 +1,11 @@
 require('dotenv').config()
 const bodyParser = require("body-parser");
+const NODE_ENV=process.env.NODE_ENV||"PRODUCTION";
 const express = require("express");
 const cors = require("cors");
 const http = require("http");
 const { Server } = require("socket.io");
+const morgan = require('morgan');
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
@@ -12,7 +14,9 @@ let database = {
   users: [],
   rooms: ["default"],
 };
-
+if (NODE_ENV === "DEVELOPMENT") {
+  app.use(morgan('combined'))
+}
 io.on("connection", (socket) => {
   database.rooms.forEach((room) => {
     socket.join(room.toLowerCase());
