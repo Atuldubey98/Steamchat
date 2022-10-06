@@ -1,29 +1,27 @@
-require('dotenv').config()
+require("dotenv").config();
 const bodyParser = require("body-parser");
-const NODE_ENV=process.env.NODE_ENV||"PRODUCTION";
+const NODE_ENV = process.env.NODE_ENV || "PRODUCTION";
 const express = require("express");
 const cors = require("cors");
 const http = require("http");
 const { Server } = require("socket.io");
-const morgan = require('morgan');
+const morgan = require("morgan");
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
-const PORT=process.env.PORT||5000;
+const PORT = process.env.PORT || 5000;
 let database = {
   users: [],
   rooms: ["default"],
 };
 if (NODE_ENV === "DEVELOPMENT") {
-  app.use(morgan('combined'))
+  app.use(morgan("combined"));
 }
 io.on("connection", (socket) => {
   database.rooms.forEach((room) => {
     socket.join(room.toLowerCase());
   });
-  socket.on("disconnect", () => {
-
-  });
+  socket.on("disconnect", () => {});
   socket.on("message", (data) => {
     io.sockets.in(data.room.toLowerCase()).emit(data.room.toLowerCase(), data);
   });
@@ -33,7 +31,7 @@ io.on("connection", (socket) => {
       message: "User Connected",
       room: room.toLowerCase(),
       socket: socket.id,
-      size: io.sockets.adapter.rooms.get(room.toLowerCase()).size
+      size: io.sockets.adapter.rooms.get(room.toLowerCase()).size,
     });
   });
 });
@@ -50,6 +48,10 @@ app.get("/", (req, res) => {
 
 app.get("/rooms", (req, res) => {
   return res.render("pages/rooms", { title: "Rooms", rooms: database.rooms });
+});
+
+app.get("/room-members", (req, res) => {
+  return res.status(200).json({ status: true });
 });
 
 app.post("/register", (req, res) => {
