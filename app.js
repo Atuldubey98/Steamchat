@@ -1,3 +1,4 @@
+/* global process */
 require("dotenv").config();
 const bodyParser = require("body-parser");
 const NODE_ENV = process.env.NODE_ENV || "PRODUCTION";
@@ -12,7 +13,7 @@ const io = new Server(server);
 const PORT = process.env.PORT || 5000;
 let database = {
   users: [],
-  rooms: ["default"],
+  rooms: ["default"]
 };
 if (NODE_ENV === "DEVELOPMENT") {
   app.use(morgan("combined"));
@@ -31,7 +32,7 @@ io.on("connection", (socket) => {
       message: "User Connected",
       room: room.toLowerCase(),
       socket: socket.id,
-      size: io.sockets.adapter.rooms.get(room.toLowerCase()).size,
+      size: io.sockets.adapter.rooms.get(room.toLowerCase()).size
     });
   });
 });
@@ -61,7 +62,7 @@ app.post("/register", (req, res) => {
 app.post("/create-room", (req, res) => {
   if (
     !req.body.room ||
-    database.rooms.indexOf(req.body.room) != -1 ||
+    database.rooms.indexOf(req.body.room) !== -1 ||
     database.rooms.length > 8
   ) {
     return res.status(400).json({ status: false });
@@ -76,11 +77,11 @@ app.get("/check", (req, res) => {
 });
 app.delete("/delete-room", (req, res) => {
   const room = req.query.room;
-  if (!room || room == null) {
+  if (!room || room === null) {
     return res.status(400).json({ status: false });
   }
   const index = database.rooms.indexOf(room.toLowerCase());
-  if (index != -1) {
+  if (index !== -1) {
     database.rooms.splice(index, 1);
     return res.status(200).json({ status: true });
   }
